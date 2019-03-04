@@ -17,19 +17,21 @@ const SearchParams = () => {
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, updateBreed] = useDropdown("Breed", "", breeds);
 
-  async function requestPets() {
-    const res = await petfinder.pet.find({
-      location,
-      breed,
-      animal,
-      output: "full"
-    });
-
-    setPets(
-      Array.isArray(res.petfinder.pets.pet)
-        ? res.petfinder.pets.pet
-        : [res.petfinder.pets.pet]
-    );
+  function requestPets() {
+    petfinder.pet
+      .find({
+        location,
+        breed,
+        animal,
+        output: "full"
+      })
+      .then(res => {
+        setPets(
+          Array.isArray(res.petfinder.pets.pet)
+            ? res.petfinder.pets.pet
+            : [res.petfinder.pets.pet]
+        );
+      });
   }
 
   useEffect(() => {
