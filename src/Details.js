@@ -1,9 +1,10 @@
-import React from "react";
+import React, { lazy } from "react";
 import pf from "petfinder-client";
 import Carousel from "./Carousel";
-import Modal from "./Modal";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
+
+const Modal = lazy(() => import("./Modal"));
 
 const petfinder = pf({
   key: process.env.API_KEY,
