@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import pf, { ANIMALS } from "petfinder-client";
+import { connect } from "react-redux";
 import useDropdown from "./useDropdown";
 import Results from "./Results";
-import ThemeContext from "./ThemeContext";
+import changeLocation from "./actionCreator/changeLocation";
+import changeTheme from "./actionCreator/changeTheme";
 
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
 });
 
-const SearchParams = () => {
-  const [theme, setTheme] = useContext(ThemeContext);
-  const [location, updateLocation] = useState("Seattle, WA");
+const SearchParams = ({ theme, location, setTheme, updateLocation }) => {
   const [breeds, updateBreeds] = useState([]);
   const [pets, setPets] = useState([]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
@@ -84,4 +84,21 @@ const SearchParams = () => {
   );
 };
 
-export default SearchParams;
+const mapStateToProps = ({ theme, location }) => ({
+  theme,
+  location
+});
+
+const mapDispatchToProps = dispatch => ({
+  setLocation(location) {
+    dispatch(changeLocation(location));
+  },
+  setTheme(theme) {
+    dispatch(changeTheme(theme));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchParams);
